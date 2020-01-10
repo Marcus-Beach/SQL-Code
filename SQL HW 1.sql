@@ -1,0 +1,5 @@
+select * from city where CountryCode = 'BRA'
+select * from city where name like 'Spring%'
+select * from country where indepyear > '1900'
+select * from countrylanguage where countrycode = 'USA'
+select * from city where name > 'C' and name < 'S'

@@ -1,0 +1,91 @@
+--SQL Final Review
+--sakila queries
+--1
+--select title, description, rating from film order by title
+--2
+--select title, length, rental_rate from film order by length desc
+--3
+--select top 10 title from film
+--4
+--select top 10 title, description from film where rating = 'G'
+--5
+--select title, length, rating from film where rating in ('G', 'PG')
+--6
+--select top 13 title, rental_duration, special_features from film where rating in ('R', 'NC-17') order by rental_duration
+--7
+--select title, description, special_features from film where description like '%documentary%' and special_features like '%deleted scenes%'
+--8
+--select title, description, special_features, from film where description like '%documentary%' and special_features like '%deleted scenes%' and length > '98' and rental_duration = '5'
+--9
+--select title, description, special_features from film where description like '%documentary%' and (special_features like '%deleted scenes%' or special_features like '%commentaries%') and length > '98' and rental_duration = '5' order by special_features
+--10
+--select * from film where description like '%robot%'
+--12
+--select rating, count(*) as 'Number of Movies' from film group by rating
+--13
+--select rental_duration, count(*) as 'Number of Movies' from film group by rental_duration
+--14
+--select rating, format(avg(rental_rate),'N') as 'average rental rate', format(sum(length),'N') as 'total length', min(rental_rate) as 'minimum rental rate' from film group by rating order by format(avg(rental_rate),'N')
+
+--World queries
+--from city
+--15
+--select name from city where district = 'California'
+--16
+--select top 10 name, population from city order by population desc
+--17
+--select top 10 name, population from city where countrycode = 'USA' order by population desc
+--18
+--select top 5 name, population from city where countrycode = 'MEX' order by population
+--19
+--select countrycode, format(sum(population),'N3') from city where countrycode = 'MEX' group by countrycode
+--20
+--select top 5 district, count(*) as 'number of cities' from city group by district order by count(*) desc
+--21
+--select top 12 district, sum(population) as population from city group by district order by sum(population) desc
+
+--from country
+--22
+--select name, population from country where population > 10000000
+--23
+--select name, indepyear, population from country where indepyear > '1950' and population < 5000000
+--24
+--select continent, count(*) as 'number of countries' from country group by continent
+--25
+--select top 5 headofstate, sum(population) as population, count(*) as 'number of countries' from country group by headofstate order by sum(population) desc
+--26
+--select count(*) as 'number of forms of government' from (select distinct governmentform from country) as ng 
+--select distinct governmentform from country
+--27
+--select governmentform, count(*) as 'number of countries', sum(surfacearea) as 'total surface area' from country group by governmentform order by count(*) desc
+--28
+--select name, indepyear from country where indepyear > '1820' and indepyear < '1870'
+--29
+--select name, len(name) from country where len(name) <= '6'
+--30
+--select name from country where name like '%z%'
+
+--join exercises
+--World DB
+--31
+--select o.name, i.name as capital from country o join city i on o.Capital = i.ID
+--32
+--select o.name, l.language as 'official language' from country o join countrylanguage l on o.Code = l.CountryCode where l.IsOfficial = 'T'
+
+--sakila DB
+--33
+--select a.first_name, a.last_name, f.title from actor a join film_actor fa on a.actor_id = fa.actor_id join film f on fa.film_id = f.film_id where f.title = 'academy dinosaur'
+--34
+--select a.first_name, a.last_name, f.title from film f join film_actor fa on f.film_id = fa.film_id join actor a on fa.actor_id = a.actor_id where a.first_name = 'christian' and a.last_name = 'akroyd'
+--35
+--select f.title, ca.name as category from film f join film_category fc on f.film_id = fc.film_id join category ca on fc.category_id = ca.category_id where ca.name = 'horror'
+--36
+--select top 2 ca.name as category, count(*) as 'number of movies' from film_category fc join category ca on fc.category_id = ca.category_id group by ca.name order by count(*) desc
+--37
+--select distinct ca.name as category, a.first_name, a.last_name from category ca join film_category fc on ca.category_id = fc.category_id join film_actor fa on fa.film_id = fc.film_id join actor a on fa.actor_id = a.actor_id where a.first_name = 'cuba' and a.last_name = 'allen'
+--38
+--select top 1 cu.first_name, cu.last_name, count(*) as 'number of rentals', sum(p.amount) as 'total spent' from rental r join customer cu on r.customer_id = cu.customer_id join payment p on r.rental_id = p.rental_id group by cu.customer_id, cu.last_name, cu.first_name order by count(*) desc
+--39
+--select top 1 a.first_name, a.last_name, count(*) as 'number of films' from film_actor fa join actor a on fa.actor_id = a.actor_id group by a.actor_id, a.last_name, a.first_name order by count(*) desc
+--40
+--select top 1 f.title, count(*) as 'number of rentals' from rental r join inventory i on r.inventory_id = i.inventory_id join film f on i.film_id = f.film_id group by f.title order by count(*) desc
